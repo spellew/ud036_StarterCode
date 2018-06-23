@@ -1,10 +1,4 @@
-import webbrowser
-import os
-import re
 
-
-# Styles and scripting for the page
-main_page_head = '''
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -97,11 +91,7 @@ main_page_head = '''
         });
     </script>
 </head>
-'''
 
-
-# The main page layout and title bar
-main_page_content = '''
   <body>
     <!-- Trailer Video Modal -->
     <div class="modal" id="trailer">
@@ -127,56 +117,67 @@ main_page_content = '''
       </div>
     </div>
     <div class="container grid">
-      {movie_tiles}
+      
+<div class="movie-tile text-center" data-trailer-youtube-id="VnLnkwpIBpA" data-toggle="modal" data-target="#trailer">
+    <img src="https://upload.wikimedia.org/wikipedia/en/f/f9/TheAvengers2012Poster.jpg" width="220" height="342">
+    <h2>The Avengers <span class="movie-rating">[PG-13]<span></h2>
+</div>
+
+<div class="movie-tile text-center" data-trailer-youtube-id="1g3_CFmnU7k" data-toggle="modal" data-target="#trailer">
+    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/87/StarWarsMoviePoster1977.jpg/220px-StarWarsMoviePoster1977.jpg" width="220" height="342">
+    <h2>Star Wars: Episode IV – A New Hope <span class="movie-rating">[PG]<span></h2>
+</div>
+
+<div class="movie-tile text-center" data-trailer-youtube-id="5NYt1qirBWg" data-toggle="modal" data-target="#trailer">
+    <img src="https://m.media-amazon.com/images/M/MV5BMjIyZGU4YzUtNDkzYi00ZDRhLTljYzctYTMxMDQ4M2E0Y2YxXkEyXkFqcGdeQXVyNTIzOTk5ODM@._V1_UX182_CR0,0,182,268_AL_.jpg" width="220" height="342">
+    <h2>Harry Potter and the Deathly Hallows – Part 2 <span class="movie-rating">[PG-13]<span></h2>
+</div>
+
+<div class="movie-tile text-center" data-trailer-youtube-id="GokKUqLcvD8" data-toggle="modal" data-target="#trailer">
+    <img src="https://upload.wikimedia.org/wikipedia/en/8/83/Dark_knight_rises_poster.jpg" width="220" height="342">
+    <h2>The Dark Knight Rises <span class="movie-rating">[PG-13]<span></h2>
+</div>
+
+<div class="movie-tile text-center" data-trailer-youtube-id="kHRf01Gjosk" data-toggle="modal" data-target="#trailer">
+    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/bf/Transformers_dark_of_the_moon_ver5.jpg/220px-Transformers_dark_of_the_moon_ver5.jpg" width="220" height="342">
+    <h2>Transformers: Dark of the Moon <span class="movie-rating">[PG-13]<span></h2>
+</div>
+
+<div class="movie-tile text-center" data-trailer-youtube-id="ZZv1vki4ou4" data-toggle="modal" data-target="#trailer">
+    <img src="https://upload.wikimedia.org/wikipedia/en/6/69/Toy_Story_3_poster.jpg" width="220" height="342">
+    <h2>Toy Story 3 <span class="movie-rating">[G]<span></h2>
+</div>
+
+<div class="movie-tile text-center" data-trailer-youtube-id="Rvr68u6k5sI" data-toggle="modal" data-target="#trailer">
+    <img src="https://upload.wikimedia.org/wikipedia/en/9/98/Coco_%282017_film%29_poster.jpg" width="220" height="342">
+    <h2>Coco <span class="movie-rating">[PG]<span></h2>
+</div>
+
+<div class="movie-tile text-center" data-trailer-youtube-id="2e-eXJ6HgkQ" data-toggle="modal" data-target="#trailer">
+    <img src="https://upload.wikimedia.org/wikipedia/en/2/22/Titanic_poster.jpg" width="220" height="342">
+    <h2>Titanic <span class="movie-rating">[PG-13]<span></h2>
+</div>
+
+<div class="movie-tile text-center" data-trailer-youtube-id="wPosLpgMtTY" data-toggle="modal" data-target="#trailer">
+    <img src="https://upload.wikimedia.org/wikipedia/en/7/7a/Spider-Man_3%2C_International_Poster.jpg" width="220" height="342">
+    <h2>Spider-Man 3 <span class="movie-rating">[PG-13]<span></h2>
+</div>
+
+<div class="movie-tile text-center" data-trailer-youtube-id="1_uc1s3kLzo" data-toggle="modal" data-target="#trailer">
+    <img src="https://upload.wikimedia.org/wikipedia/en/b/b9/Shrek_2_poster.jpg" width="220" height="342">
+    <h2>Shrek 2 <span class="movie-rating">[PG]<span></h2>
+</div>
+
+<div class="movie-tile text-center" data-trailer-youtube-id="SPHfeNgogVs" data-toggle="modal" data-target="#trailer">
+    <img src="https://upload.wikimedia.org/wikipedia/en/2/29/Finding_Nemo.jpg" width="220" height="342">
+    <h2>Finding Nemo <span class="movie-rating">[G]<span></h2>
+</div>
+
+<div class="movie-tile text-center" data-trailer-youtube-id="zx3LT_G3cIA" data-toggle="modal" data-target="#trailer">
+    <img src="https://upload.wikimedia.org/wikipedia/en/3/3d/The_Lion_King_poster.jpg" width="220" height="342">
+    <h2>The Lion King <span class="movie-rating">[G]<span></h2>
+</div>
+
     </div>
   </body>
 </html>
-'''
-
-
-# A single movie entry html template
-movie_tile_content = '''
-<div class="movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
-    <img src="{poster_image_url}" width="220" height="342">
-    <h2>{movie_title} <span class="movie-rating">[{movie_rating}]<span></h2>
-</div>
-'''
-
-
-def create_movie_tiles_content(movies):
-    # The HTML content for this section of the page
-    content = ''
-    for movie in movies:
-        # Extract the youtube ID from the url
-        youtube_id_match = re.search(
-            r'(?<=v=)[^&#]+', movie.trailer_youtube_url)
-        youtube_id_match = youtube_id_match or re.search(
-            r'(?<=be/)[^&#]+', movie.trailer_youtube_url)
-        trailer_youtube_id = (youtube_id_match.group(0) if youtube_id_match
-                              else None)
-
-        # Append the tile for the movie with its content filled in
-        content += movie_tile_content.format(
-            movie_title=movie.title,
-            movie_rating=movie.rating,
-            poster_image_url=movie.poster_image_url,
-            trailer_youtube_id=trailer_youtube_id
-        )
-    return content
-
-
-def open_movies_page(movies):
-    # Create or overwrite the output file
-    output_file = open('fresh_tomatoes.html', 'w')
-
-    # Replace the movie tiles placeholder generated content
-    rendered_content = main_page_content.format(
-        movie_tiles=create_movie_tiles_content(movies))
-
-    # Output the file
-    output_file.write(main_page_head + rendered_content)
-    output_file.close()
-
-    # open the output file in the browser (in a new tab, if possible)
-    url = os.path.abspath(output_file.name)
-    webbrowser.open('file://' + url, new=2)
