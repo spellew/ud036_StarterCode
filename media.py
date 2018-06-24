@@ -3,13 +3,15 @@ import webbrowser
 
 class Movie():
     """
-    This class provides a way to store movie related information, such as a movie's title, rating, storyline, poster, and trailer.
+    This class provides a way to store movie related information, such as a "
+    " movie's title, rating, storyline, poster, and trailer.
 
     Attributes:
         VALID_RATINGS (list): A movie's possible ratings
 
     Todo:
-        Use an API to retrieve movies and their info, instead of hard coding it.
+        Use an API to retrieve movies and their info, instead of hard coding "
+        " it.
     """  # This string can accessed via media.Movie.__doc__
 
     # This class constant can be accessed by media.Movie.VALID_RATINGS
